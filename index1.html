@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine, Aniviti!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Calibri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0, #ffafbd, #ffc3a0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Butterfly container */
+        .butterflies-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+        
+        /* Individual butterflies */
+        .butterfly {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 0;
+            opacity: 0.9;
+        }
+        
+        /* Butterfly wing animations */
+        .butterfly .left-wing, .butterfly .right-wing {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background-size: contain;
+            background-repeat: no-repeat;
+            border-radius: 50% 50% 50% 50%;
+        }
+        
+        .butterfly .left-wing {
+            left: 0;
+            transform-origin: right center;
+            animation: flapLeft 0.8s infinite alternate ease-in-out;
+        }
+        
+        .butterfly .right-wing {
+            right: 0;
+            transform-origin: left center;
+            animation: flapRight 0.8s infinite alternate ease-in-out;
+        }
+        
+        @keyframes flapLeft {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(60deg); }
+        }
+        
+        @keyframes flapRight {
+            0% { transform: rotateY(0deg); }
+            100% { transform: rotateY(-60deg); }
+        }
+        
+        /* Main content container */
+        .container {
+            position: relative;
+            z-index: 10;
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 50px 60px;
+            border-radius: 25px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            border: 12px solid #ff4d6d;
+            animation: float 6s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        /* Heart decorations */
+        .heart {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 28px;
+            animation: heartbeat 1.5s infinite;
+            z-index: 1;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        /* Main heading */
+        h1 {
+            color: #ff2e63;
+            font-size: 3.8rem;
+            margin-bottom: 25px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+            line-height: 1.2;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        /* Special name styling */
+        .name {
+            color: #ff006e;
+            font-size: 4.2rem;
+            display: block;
+            margin-top: 15px;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.15);
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+        
+        /* Question text */
+        .question {
+            font-size: 2rem;
+            color: #555;
+            margin-bottom: 50px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Button container */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            position: relative;
+        }
+        
+        /* Button styling */
+        .btn {
+            padding: 22px 50px;
+            font-size: 2rem;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            font-family: 'Calibri', sans-serif;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 100;
+        }
+        
+        /* Yes button */
+        .yes-btn {
+            background: linear-gradient(to right, #ff4d6d, #ff2e63);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .yes-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 30px rgba(255, 46, 99, 0.4);
+            background: linear-gradient(to right, #ff2e63, #ff004d);
+        }
+        
+        .yes-btn:active {
+            transform: scale(0.98);
+        }
+        
+        /* No button - moves around */
+        .no-btn {
+            background: linear-gradient(to right, #cccccc, #aaaaaa);
+            color: #777777;
+            position: absolute;
+            transition: all 0.1s ease;
+            cursor: not-allowed;
+        }
+        
+        /* Button icons */
+        .btn i {
+            margin-right: 15px;
+            font-size: 1.8rem;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.8rem;
+            }
+            
+            .name {
+                font-size: 3rem;
+            }
+            
+            .question {
+                font-size: 1.6rem;
+            }
+            
+            .btn {
+                font-size: 1.6rem;
+                padding: 18px 35px;
+                min-width: 160px;
+            }
+            
+            .container {
+                padding: 40px 30px;
+                width: 95%;
+            }
+            
+            .buttons {
+                gap: 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .name {
+                font-size: 2.4rem;
+            }
+            
+            .question {
+                font-size: 1.4rem;
+            }
+            
+            .btn {
+                font-size: 1.4rem;
+                padding: 15px 30px;
+                min-width: 140px;
+            }
+        }
+        
+        /* Footer message */
+        .footer {
+            margin-top: 50px;
+            color: #777;
+            font-size: 1.2rem;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Confetti effect for yes button */
+        .confetti {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #ff4d6d;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .hearts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .floating-heart {
+            position: absolute;
+            color: #ff4d6d;
+            font-size: 24px;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* No button escape message */
+        .escape-message {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ff4d6d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            white-space: nowrap;
+            z-index: 20;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .escape-message.show {
+            opacity: 1;
+        }
+        
+        /* Message after acceptance */
+        .acceptance-message {
+            display: none;
+            font-size: 2.5rem;
+            color: #ff2e63;
+            margin-top: 30px;
+            font-weight: bold;
+            animation: pulseText 1.5s infinite;
+        }
+        
+        @keyframes pulseText {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Butterfly container -->
+    <div class="butterflies-container" id="butterflies"></div>
+    
+    <!-- Floating hearts container -->
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <!-- Main content -->
+    <div class="container">
+        <!-- Heart decorations -->
+        <div class="heart" style="top: 20px; left: 30px;"><i class="fas fa-heart"></i></div>
+        <div class="heart" style="top: 20px; right: 30px;"><i class="fas fa-heart"></i></div>
+        <div class="heart" style="bottom: 20px; left: 30px;"><i class="fas fa-heart"></i></div>
+        <div class="heart" style="bottom: 20px; right: 30px;"><i class="fas fa-heart"></i></div>
+        
+        <h1>WILL YOU BE MY<br><span class="name">VALENITINE ANIVITI?</span></h1>
+        
+        <p class="question">I've been waiting to ask you this all year! 💖</p>
+        
+        <div class="buttons">
+            <button class="btn yes-btn" id="yesBtn">
+                <i class="fas fa-heart"></i> YES!
+            </button>
+            
+            <button class="btn no-btn" id="noBtn">
+                <i class="fas fa-times"></i> NO
+            </button>
+            
+            <div class="escape-message" id="escapeMessage">You can't escape that easily! 😉</div>
+        </div>
+        
+        <div class="acceptance-message" id="acceptanceMessage">
+            You've made me the happiest person! Happy Valentine's Day, Aniviti! 💘
+        </div>
+        
+        <p class="footer">The "No" button is just for decoration... there's only one right answer! 💝</p>
+    </div>
+
+    <script>
+        // Create colorful butterflies
+        function createButterflies() {
+            const butterflyContainer = document.getElementById('butterflies');
+            const colors = [
+                ['#ff006e', '#ff4d6d'], // Pink/Red
+                ['#3a86ff', '#8338ec'], // Blue/Purple
+                ['#ff9e00', '#ff5400'], // Orange
+                ['#06d6a0', '#118ab2'], // Green/Blue
+                ['#ff5d8f', '#ff97b7'], // Light Pink
+                ['#7209b7', '#560bad']  // Purple
+            ];
+            
+            // Create 25 butterflies
+            for (let i = 0; i < 25; i++) {
+                const butterfly = document.createElement('div');
+                butterfly.classList.add('butterfly');
+                
+                // Create wings
+                const leftWing = document.createElement('div');
+                leftWing.classList.add('left-wing');
+                const rightWing = document.createElement('div');
+                rightWing.classList.add('right-wing');
+                
+                // Random color
+                const colorIndex = Math.floor(Math.random() * colors.length);
+                const wingColor = colors[colorIndex];
+                
+                // Set wing colors with gradient
+                leftWing.style.background = `linear-gradient(135deg, ${wingColor[0]}, ${wingColor[1]})`;
+                rightWing.style.background = `linear-gradient(135deg, ${wingColor[1]}, ${wingColor[0]})`;
+                
+                // Random position
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                
+                // Random size
+                const size = 30 + Math.random() * 40;
+                
+                // Random animation duration
+                const duration = 0.5 + Math.random() * 1;
+                
+                // Apply styles
+                butterfly.style.left = `${left}%`;
+                butterfly.style.top = `${top}%`;
+                butterfly.style.width = `${size}px`;
+                butterfly.style.height = `${size}px`;
+                
+                // Apply wing animations
+                leftWing.style.animationDuration = `${duration}s`;
+                rightWing.style.animationDuration = `${duration}s`;
+                
+                butterfly.appendChild(leftWing);
+                butterfly.appendChild(rightWing);
+                butterflyContainer.appendChild(butterfly);
+                
+                // Make butterflies move around
+                animateButterfly(butterfly);
+            }
+        }
+        
+        // Animate butterfly movement
+        function animateButterfly(butterfly) {
+            let x = parseFloat(butterfly.style.left);
+            let y = parseFloat(butterfly.style.top);
+            let xDirection = Math.random() > 0.5 ? 1 : -1;
+            let yDirection = Math.random() > 0.5 ? 1 : -1;
+            let speed = 0.02 + Math.random() * 0.03;
+            
+            function move() {
+                // Update position
+                x += xDirection * speed;
+                y += yDirection * speed;
+                
+                // Boundary check - bounce off edges
+                if (x <= 0 || x >= 98) {
+                    xDirection *= -1;
+                    x = Math.max(0, Math.min(98, x));
+                }
+                
+                if (y <= 0 || y >= 98) {
+                    yDirection *= -1;
+                    y = Math.max(0, Math.min(98, y));
+                }
+                
+                // Occasionally change direction randomly
+                if (Math.random() < 0.01) {
+                    xDirection = Math.random() > 0.5 ? 1 : -1;
+                }
+                
+                if (Math.random() < 0.01) {
+                    yDirection = Math.random() > 0.5 ? 1 : -1;
+                }
+                
+                // Apply new position
+                butterfly.style.left = `${x}%`;
+                butterfly.style.top = `${y}%`;
+                
+                // Continue animation
+                requestAnimationFrame(move);
+            }
+            
+            move();
+        }
+        
+        // Make the "No" button move around when hovered
+        const noBtn = document.getElementById('noBtn');
+        const escapeMessage = document.getElementById('escapeMessage');
+        const buttonsContainer = document.querySelector('.buttons');
+        
+        // Get container dimensions
+        const containerRect = document.querySelector('.container').getBoundingClientRect();
+        const buttonsRect = buttonsContainer.getBoundingClientRect();
+        
+        // Initial position for the "No" button
+        let noBtnX = buttonsRect.width / 2 + 200; // Position to the right of "Yes" button
+        let noBtnY = 0;
+        
+        noBtn.style.left = `${noBtnX}px`;
+        noBtn.style.top = `${noBtnY}px`;
+        
+        // Function to move the "No" button away from cursor
+        function moveNoButton(e) {
+            // Show escape message
+            escapeMessage.classList.add('show');
+            
+            // Get mouse position relative to buttons container
+            const rect = buttonsContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+            
+            // Get button center
+            const btnCenterX = noBtnX + noBtn.offsetWidth / 2;
+            const btnCenterY = noBtnY + noBtn.offsetHeight / 2;
+            
+            // Calculate distance between mouse and button
+            const dx = mouseX - btnCenterX;
+            const dy = mouseY - btnCenterY;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // If mouse is too close to the button, move it away
+            const minDistance = 120;
+            
+            if (distance < minDistance) {
+                // Calculate new position away from mouse
+                const angle = Math.atan2(dy, dx);
+                const moveDistance = minDistance - distance + 20;
+                
+                // Calculate new position
+                let newX = noBtnX - Math.cos(angle) * moveDistance;
+                let newY = noBtnY - Math.sin(angle) * moveDistance;
+                
+                // Keep button within bounds
+                const maxX = rect.width - noBtn.offsetWidth - 20;
+                const maxY = rect.height - noBtn.offsetHeight - 20;
+                
+                newX = Math.max(20, Math.min(maxX, newX));
+                newY = Math.max(20, Math.min(maxY, newY));
+                
+                // Apply new position with smooth transition
+                noBtn.style.transition = 'left 0.3s ease, top 0.3s ease';
+                noBtn.style.left = `${newX}px`;
+                noBtn.style.top = `${newY}px`;
+                
+                // Update stored position
+                noBtnX = newX;
+                noBtnY = newY;
+                
+                // Hide escape message after moving
+                setTimeout(() => {
+                    escapeMessage.classList.remove('show');
+                }, 1000);
+            }
+        }
+        
+        // Add event listener to buttons container
+        buttonsContainer.addEventListener('mousemove', moveNoButton);
+        
+        // Also move button when it's clicked (just in case)
+        noBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Move button randomly
+            const rect = buttonsContainer.getBoundingClientRect();
+            const maxX = rect.width - noBtn.offsetWidth - 20;
+            const maxY = rect.height - noBtn.offsetHeight - 20;
+            
+            const newX = Math.random() * maxX;
+            const newY = Math.random() * maxY;
+            
+            noBtn.style.left = `${newX}px`;
+            noBtn.style.top = `${newY}px`;
+            
+            noBtnX = newX;
+            noBtnY = newY;
+            
+            // Show escape message
+            escapeMessage.classList.add('show');
+            setTimeout(() => {
+                escapeMessage.classList.remove('show');
+            }, 1500);
+            
+            return false;
+        });
+        
+        // Create floating hearts
+        function createFloatingHearts() {
+            const heartsContainer = document.getElementById('heartsContainer');
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('floating-heart');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                // Random starting position
+                const startX = Math.random() * 100;
+                
+                // Random size
+                const size = 15 + Math.random() * 25;
+                
+                // Random animation delay
+                const delay = Math.random() * 10;
+                
+                // Random animation duration
+                const duration = 15 + Math.random() * 20;
+                
+                // Apply styles
+                heart.style.left = `${startX}%`;
+                heart.style.top = `100%`;
+                heart.style.fontSize = `${size}px`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.opacity = '0.7';
+                
+                heartsContainer.appendChild(heart);
+                
+                // Animate heart floating up
+                animateFloatingHeart(heart, duration);
+            }
+        }
+        
+        // Animate heart floating upwards
+        function animateFloatingHeart(heart, duration) {
+            let startTime = null;
+            const startX = parseFloat(heart.style.left);
+            
+            function floatUp(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / (duration * 1000), 1);
+                
+                // Move heart upwards
+                const currentY = 100 - progress * 150; // Move up 150%
+                heart.style.top = `${currentY}%`;
+                
+                // Slight horizontal movement
+                const currentX = startX + Math.sin(progress * Math.PI * 2) * 5;
+                heart.style.left = `${currentX}%`;
+                
+                // Fade in and out
+                if (progress < 0.2) {
+                    heart.style.opacity = `${progress * 3.5}`;
+                } else if (progress > 0.8) {
+                    heart.style.opacity = `${(1 - progress) * 3.5}`;
+                }
+                
+                // Continue animation if not finished
+                if (progress < 1) {
+                    requestAnimationFrame(floatUp);
+                } else {
+                    // Reset heart to bottom
+                    heart.style.top = `100%`;
+                    heart.style.left = `${Math.random() * 100}%`;
+                    heart.style.opacity = '0';
+                    
+                    // Restart animation after a delay
+                    setTimeout(() => {
+                        startTime = null;
+                        requestAnimationFrame(floatUp);
+                    }, 1000);
+                }
+            }
+            
+            requestAnimationFrame(floatUp);
+        }
+        
+        // Create confetti effect
+        function createConfetti() {
+            const container = document.querySelector('.container');
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                
+                // Random position at top
+                const left = Math.random() * 100;
+                
+                // Random color
+                const colors = ['#ff4d6d', '#ffafcc', '#ff8fab', '#ff2e63', '#ffb3c1', '#ff006e', '#ff5d8f'];
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random size
+                const size = 5 + Math.random() * 15;
+                
+                // Random shape
+                const isCircle = Math.random() > 0.5;
+                
+                // Apply styles
+                confetti.style.left = `${left}%`;
+                confetti.style.backgroundColor = color;
+                confetti.style.width = `${size}px`;
+                confetti.style.height = `${size}px`;
+                confetti.style.borderRadius = isCircle ? '50%' : '0';
+                
+                // Add to container
+                container.appendChild(confetti);
+                
+                // Animate confetti
+                animateConfetti(confetti);
+            }
+        }
+        
+        // Animate confetti falling
+        function animateConfetti(confetti) {
+            // Starting position at top
+            confetti.style.top = '-20px';
+            confetti.style.opacity = '1';
+            
+            // Random horizontal movement
+            const xStart = parseFloat(confetti.style.left);
+            const xEnd = xStart + (Math.random() * 60 - 30);
+            
+            // Animation duration
+            const duration = 1.5 + Math.random() * 2;
+            
+            let startTime = null;
+            
+            function dropConfetti(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / (duration * 1000), 1);
+                
+                // Calculate current position
+                const currentX = xStart + (xEnd - xStart) * progress;
+                const currentY = progress * 120; // Falls down 120%
+                
+                // Apply position
+                confetti.style.left = `${currentX}%`;
+                confetti.style.top = `${currentY}%`;
+                
+                // Rotate confetti
+                confetti.style.transform = `rotate(${progress * 360 * 5}deg)`;
+                
+                // Fade out at the end
+                if (progress > 0.7) {
+                    confetti.style.opacity = `${1 - (progress - 0.7) / 0.3}`;
+                }
+                
+                // Continue animation if not finished
+                if (progress < 1) {
+                    requestAnimationFrame(dropConfetti);
+                } else {
+                    // Remove confetti when animation is complete
+                    confetti.remove();
+                }
+            }
+            
+            requestAnimationFrame(dropConfetti);
+        }
+        
+        // Yes button click handler
+        document.getElementById('yesBtn').addEventListener('click', function() {
+            // Create confetti effect
+            createConfetti();
+            
+            // Change button text and add celebration effect
+            this.innerHTML = '<i class="fas fa-heart"></i> YAY! I\'M SO HAPPY!';
+            this.style.background = 'linear-gradient(to right, #ff006e, #ff4d6d)';
+            this.style.transform = 'scale(1.15)';
+            this.style.boxShadow = '0 20px 40px rgba(255, 0, 110, 0.5)';
+            
+            // Remove the "No" button and escape message
+            const noBtn = document.getElementById('noBtn');
+            const escapeMessage = document.getElementById('escapeMessage');
+            noBtn.style.display = 'none';
+            escapeMessage.style.display = 'none';
+            
+            // Remove the mousemove listener
+            buttonsContainer.removeEventListener('mousemove', moveNoButton);
+            
+            // Show acceptance message
+            const acceptanceMessage = document.getElementById('acceptanceMessage');
+            acceptanceMessage.style.display = 'block';
+            
+            // Change main heading
+            const heading = document.querySelector('h1');
+            heading.innerHTML = 'YOU SAID YES!<br><span class="name">THANK YOU ANIVITI!</span>';
+            
+            // Change question text
+            const question = document.querySelector('.question');
+            question.innerHTML = 'This is going to be the best Valentine\'s Day ever! 💕';
+            question.style.color = '#ff006e';
+            question.style.fontWeight = 'bold';
+            
+            // Change footer text
+            const footer = document.querySelector('.footer');
+            footer.innerHTML = 'You made the perfect choice! Get ready for an amazing Valentine\'s Day! 💘';
+            
+            // Create more hearts
+            createFloatingHearts();
+            
+            // Play a celebration sound (if allowed by browser)
+            try {
+                playCelebrationSound();
+            } catch (e) {
+                console.log("Audio not supported");
+            }
+        });
+        
+        // Celebration sound using Web Audio API
+        function playCelebrationSound() {
+            // Create audio context
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create notes for a happy melody
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            let time = audioContext.currentTime;
+            
+            // Play each note
+            for (let i = 0; i < notes.length; i++) {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(notes[i], time);
+                
+                gainNode.gain.setValueAtTime(0, time);
+                gainNode.gain.linearRampToValueAtTime(0.1, time + 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.5);
+                
+                oscillator.start(time);
+                oscillator.stop(time + 0.5);
+                
+                time += 0.2;
+            }
+        }
+        
+        // Initialize everything when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            createButterflies();
+            createFloatingHearts();
+        });
+        
+        // Make sure the "No" button is properly positioned on window resize
+        window.addEventListener('resize', function() {
+            // Recalculate button position
+            const buttonsRect = buttonsContainer.getBoundingClientRect();
+            const maxX = buttonsRect.width - noBtn.offsetWidth - 20;
+            const maxY = buttonsRect.height - noBtn.offsetHeight - 20;
+            
+            // Keep button within bounds
+            noBtnX = Math.max(20, Math.min(maxX, noBtnX));
+            noBtnY = Math.max(20, Math.min(maxY, noBtnY));
+            
+            noBtn.style.left = `${noBtnX}px`;
+            noBtn.style.top = `${noBtnY}px`;
+        });
+    </script>
+</body>
+</html>
